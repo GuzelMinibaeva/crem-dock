@@ -15,7 +15,7 @@ from easydock.run_dock import get_supplied_args, docking
 
 from cremdock import database
 from cremdock import user_protected_atoms
-from cremdock.arg_types import cpu_type, filepath_type, similarity_value_type, str_lower_type
+from cremdock.arg_types import cpu_type, filepath_type, similarity_value_type, str_lower_type, ring_size_type
 from cremdock.crem_grow import grow_mols_crem
 from cremdock.database import get_protein_heavy_atom_xyz
 from cremdock.molecules import get_major_tautomer
@@ -248,7 +248,7 @@ def entry_point():
     group2.add_argument('--ring_size', metavar='INTEGER', type=int, nargs='+', default=None, required=False,
                         help='size of the new ring to form with make_cycle (in atoms). Give one value for a single '
                              'size or two values (min max) for a range. Ignored if --make_cycle is not set.')
-    group2.add_argument('--ring_closures', action='store_true', default=False,
+    group2.add_argument('--extended_ring_closures', action='store_true', default=False,
                         help='if set, make_cycle will query acyclic-cut linker fragments (ring_closures=False) '
                              'instead of ring-closure (arc) fragments. Ignored if --make_cycle is not set.')
 
@@ -382,16 +382,7 @@ def entry_point():
 
     sample_func = sample_functions[args.sample_func] if args.sample_func else None
     filter_func = filter_functions[args.filter_func] if args.filter_func else None
-
-    if args.ring_size is None:
-        ring_size = None
-    elif len(args.ring_size) == 1:
-        ring_size = args.ring_size[0]
-    elif len(args.ring_size) == 2:
-        ring_size = tuple(args.ring_size)
-    else:
-        raise ValueError('--ring_size accepts either one value (fixed ring size) or two values (min max window), '
-                         f'got {len(args.ring_size)}: {args.ring_size}')
+    ring_size = ring_size_type(args.ring_size)
 
     iteration = 0
     try:
@@ -407,7 +398,7 @@ def entry_point():
                                             min_freq=args.min_freq, min_atoms=args.min_atoms, max_atoms=args.max_atoms,
                                             max_replacements=args.max_replacements, sample_func=sample_func,
                                             filter_func=filter_func, set_names=args.set_names, make_cycle=args.make_cycle,
-                                            ring_size=ring_size, ring_closures=args.ring_closures,
+                                            ring_size=ring_size, ring_closures=not args.extended_ring_closures,
                                             tautomerize=args.tautomerize, n_iterations=args.n_iterations)
             make_docking = True
 
