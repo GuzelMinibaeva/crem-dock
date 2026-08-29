@@ -103,9 +103,9 @@ def grow_mol_crem(mol, protein_xyz, max_mw, max_rtb, max_logp, max_tpsa, h_dist_
         if make_cycle:
             try:
                 cycle_res = list(crem_make_cycle(mol, protected_ids=protected_ids, ring_size=ring_size,
-                                 ring_closures=ring_closures, return_rxn=False, return_mol=True,
-                                 ncores=ncpu, symmetry_fixes=True, mw=(1, mw), rtb=(0, rtb), logp=(-100, logp),
-                                 tpsa=(0, tpsa), **kwargs))
+                                                 ring_closures=ring_closures, return_rxn=False, return_mol=True,
+                                                 ncores=ncpu, symmetry_fixes=True, mw=(1, mw), rtb=(0, rtb), logp=(-100, logp),
+                                                 tpsa=(0, tpsa), **kwargs))
             except Exception as e:
                 logging.error(f'make_cycle error, {mol.GetProp("_Name")} {Chem.MolToSmiles(mol)}, {e}',
                               stack_info=True, exc_info=True)
