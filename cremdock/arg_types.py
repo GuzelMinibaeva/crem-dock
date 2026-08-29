@@ -34,6 +34,4 @@ def ring_size_type(x):
         raise ValueError(f'--ring_size values must be at least 3 (a ring cannot have fewer atoms), got {x}')
     if len(x) == 1:
         return x[0]
-    if x[0] > x[1]:
-        raise ValueError(f'--ring_size requires min <= max, got min={x[0]}, max={x[1]}')
-    return tuple(x)
+    return tuple(sorted(x))

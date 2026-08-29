@@ -65,9 +65,8 @@ def get_protein_heavy_atoms_xyz_from_string(pdb_block):
 
 
 def grow_mol_crem(mol, protein_xyz, max_mw, max_rtb, max_logp, max_tpsa, h_dist_threshold=2, ncpu=1, make_cycle=False, **kwargs):
-    if make_cycle:
-        ring_size = kwargs.pop('ring_size')
-        ring_closures = kwargs.pop('ring_closures')
+    ring_size = kwargs.pop('ring_size')
+    ring_closures = kwargs.pop('ring_closures')
 
     mol_0 = neutralize_atoms(mol)  # add neutralize_atoms to calc correct logp and tpsa
     mw = max_mw - Chem.Descriptors.MolWt(mol_0)
@@ -104,9 +103,9 @@ def grow_mol_crem(mol, protein_xyz, max_mw, max_rtb, max_logp, max_tpsa, h_dist_
         if make_cycle:
             try:
                 cycle_res = list(crem_make_cycle(mol, protected_ids=protected_ids, ring_size=ring_size,
-                                            ring_closures=ring_closures, return_rxn=False, return_mol=True,
-                                            ncores=ncpu, symmetry_fixes=True, mw=(1, mw), rtb=(0, rtb), logp=(-100, logp),
-                                            tpsa=(0, tpsa), **kwargs))
+                                 ring_closures=ring_closures, return_rxn=False, return_mol=True,
+                                 ncores=ncpu, symmetry_fixes=True, mw=(1, mw), rtb=(0, rtb), logp=(-100, logp),
+                                 tpsa=(0, tpsa), **kwargs))
             except Exception as e:
                 logging.error(f'make_cycle error, {mol.GetProp("_Name")} {Chem.MolToSmiles(mol)}, {e}',
                               stack_info=True, exc_info=True)
