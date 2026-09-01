@@ -367,16 +367,16 @@ def entry_point():
         dask_client = None
 
     if args.program == 'vina':
-        from easydock.dock.vina_dock import mol_dock, pred_dock_time
+        from easydock.vina_dock import mol_dock, pred_dock_time
     elif args.program == 'gnina':
-        from easydock.dock.gnina_dock import mol_dock
-        from easydock.dock.vina_dock import pred_dock_time
+        from easydock.gnina_dock import mol_dock
+        from easydock.vina_dock import pred_dock_time
     elif args.program == 'vina-gpu':
-        from easydock.dock.vinagpu_dock import mol_dock
-        from easydock.dock.vina_dock import pred_dock_time
+        from easydock.vinagpu_dock import mol_dock
+        from easydock.vina_dock import pred_dock_time
     elif args.program == 'qvina':
-        from easydock.dock.qvina_dock import mol_dock
-        from easydock.dock.vina_dock import pred_dock_time
+        from easydock.qvina_dock import mol_dock
+        from easydock.vina_dock import pred_dock_time
     else:
         raise ValueError(f'Illegal program argument was supplied: {args.program}')
 
